@@ -1,0 +1,48 @@
+<h3 id="about">About</h3>
+
+<p>The <a href="https://en.wikipedia.org/wiki/Durbin%E2%80%93Watson_statistic">Durbin Watson Test</a> is a test for serial correlation
+in error terms.  The Durbin Watson test statistic <foo>\(d\)</foo> can take values between 0 and 4, and in general</p>
+
+<ul>
+  <li>
+    <foo>\(d \lt 1.5 \)</foo>
+    <p>implies positive autocorrelation</p>
+  </li>
+  <li>
+    <foo>\(d \gt 2.5 \)</foo>
+    <p>implies negative autocorrelation</p>
+  </li>
+  <li>
+    <foo>\(1.5 \lt d \lt 2.5 \)</foo>
+    <p>implies to autocorrelation.</p>
+  </li>
+</ul>
+
+<p>Implementation is based off of the <code class="highlighter-rouge">durbinWatsonTest</code> function in the <a href="https://cran.r-project.org/web/packages/car/index.html"><code class="highlighter-rouge">car</code></a> package in R</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<h3 id="example">Example</h3>
+
+<h4 id="r-prototype">R Prototype</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>library(car)
+residuals &lt;- seq(0, 4.9, 0.1)
+## perform Durbin-Watson test
+durbinWatsonTest(residuals)
+</code></pre></div></div>
+
+<h4 id="in-apache-mahout">In Apache Mahout</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">//</span> <span class="n">A</span> <span class="n">DurbinWatson</span> <span class="n">Test</span> <span class="n">must</span> <span class="n">be</span> <span class="n">performed</span> <span class="n">on</span> <span class="n">a</span> <span class="k">model</span><span class="p">.</span> <span class="n">The</span> <span class="k">model</span> <span class="n">does</span> <span class="k">not</span> <span class="n">matter</span><span class="p">.</span>
+<span class="n">val</span> <span class="n">drmX</span> <span class="p">=</span> <span class="n">drmParallelize</span><span class="p">(</span> <span class="n">dense</span><span class="p">((</span><span class="m">0</span> <span class="k">until</span> <span class="m">50</span><span class="p">).</span><span class="n">toArray</span><span class="p">.</span><span class="n">map</span><span class="p">(</span> <span class="n">t</span> <span class="p">=&gt;</span> <span class="n">Math</span><span class="p">.</span><span class="n">pow</span><span class="p">(-</span><span class="m">1.0</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span> <span class="p">)</span> <span class="p">).</span><span class="n">t</span>
+<span class="n">val</span> <span class="n">drmY</span> <span class="p">=</span> <span class="n">drmX</span> <span class="p">+</span> <span class="n">err1</span> <span class="p">+</span> <span class="m">1</span>
+<span class="n">var</span> <span class="k">model</span> <span class="p">=</span> <span class="n">new</span> <span class="n">OrdinaryLeastSquares</span><span class="p">[</span><span class="n">Int</span><span class="p">]().</span><span class="n">fit</span><span class="p">(</span><span class="n">drmX</span><span class="p">,</span> <span class="n">drmY</span><span class="p">)</span>
+<span class="p">//</span> <span class="k">end</span> <span class="n">arbitrary</span> <span class="k">model</span> 
+
+<span class="n">val</span> <span class="n">err1</span> <span class="p">=</span>  <span class="n">drmParallelize</span><span class="p">(</span> <span class="n">dense</span><span class="p">((</span><span class="m">0.0</span> <span class="k">until</span> <span class="m">5.0</span> <span class="n">by</span> <span class="m">0.1</span><span class="p">).</span><span class="n">toArray</span><span class="p">)</span> <span class="p">).</span><span class="n">t</span>
+<span class="n">val</span> <span class="n">syntheticResiduals</span> <span class="p">=</span> <span class="n">err1</span>
+<span class="k">model</span> <span class="p">=</span> <span class="n">AutocorrelationTests</span><span class="p">.</span><span class="n">DurbinWatson</span><span class="p">(</span><span class="k">model</span><span class="p">,</span> <span class="n">syntheticResiduals</span><span class="p">)</span>
+<span class="n">val</span> <span class="n">myAnswer</span><span class="p">:</span> <span class="n">Double</span> <span class="p">=</span> <span class="k">model</span><span class="p">.</span><span class="n">testResults</span><span class="p">.</span><span class="n">getOrElse</span><span class="p">(</span><span class="s1">'durbinWatsonTestStatistic, -1.0).asInstanceOf[Double]
+</span></code></pre></div></div>
+

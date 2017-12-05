@@ -1,0 +1,20 @@
+<h3 id="about">About</h3>
+
+<p><code class="highlighter-rouge">MeanCenter</code> centers values about the column mean.</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<h3 id="example">Example</h3>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.apache.mahout.math.algorithms.preprocessing.MeanCenter</span>
+
+<span class="k">val</span> <span class="n">A</span> <span class="k">=</span> <span class="n">drmParallelize</span><span class="o">(</span><span class="n">dense</span><span class="o">(</span>
+      <span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">),</span>
+      <span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">2</span><span class="o">),</span>
+      <span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="mi">9</span><span class="o">,</span> <span class="mi">0</span><span class="o">)),</span> <span class="n">numPartitions</span> <span class="k">=</span> <span class="mi">2</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">scaler</span><span class="k">:</span> <span class="kt">MeanCenterModel</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MeanCenter</span><span class="o">().</span><span class="n">fit</span><span class="o">(</span><span class="n">A</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="n">centeredA</span> <span class="k">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="o">(</span><span class="n">A</span><span class="o">)</span>
+</code></pre></div></div>
+
